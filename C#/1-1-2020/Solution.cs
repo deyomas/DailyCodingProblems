@@ -21,8 +21,15 @@ public class Solution {
  */
 	private int RandomNumber(int n, List<int> l)
 	{
+		//working on a sorted set makes the problem simpler.
+		l.Sort();
+
 		//Check to make sure L does have an open number in the range
-		//TODO
+		//If l doesn't contain n-1 we're good and if n-1's
+		//index is n-1 then l is full from 0 to n-1
+		if (l.Contains(n - 1) && l.IndexOf(n - 1) == n - 1) {
+			return -1;
+		}
 
 		Random rand = new Random();
 
@@ -33,6 +40,8 @@ public class Solution {
 
 		//Slight improvement on brute force
 		//O(n) runtime (slightly improved), improvement on space
+
+		//This needs updating
 		int notCount = (n - 1) - l.Count;
 		//Use a random index to represent the index of the random number not in l that we want
 		int randIdx = rand.Next(0, notCount);
@@ -46,10 +55,6 @@ public class Solution {
 			}
 		}
 
-		//Pick a random number, check
-		//Could potentially be horrible in runtime depending on circumstances
-		//TODO
-
 		//Brute force, no considerations
 		//This is O(n) complexity, O(2n) => O(n) space (Might be O(n) space)
 		List<int> notInList = new List<int>();
@@ -58,8 +63,14 @@ public class Solution {
 				notInList.Add(i);
 			}
 		}
+		return notInList[rand.Next(0, notInList.Count - 1)];
 
 		
-		return notInList[rand.Next(0, notInList.Count - 1)];
+		//Pick a random number, check
+		//Could potentially be horrible in runtime depending on circumstances
+		while (true) {
+			int i = rand.Next(0, n - 1);
+			if (!l.Contains(i)) return i;
+		}
 	}
 }
